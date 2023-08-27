@@ -7,11 +7,12 @@ namespace CalendarAPI;
 
 public static class CalendarManager
 {
-	public static CalendarService GenerateService(ServiceAccountCredential credential)
+	public static CalendarService GenerateService(UserCredential credential)
 	{
 		var service = new CalendarService(new BaseClientService.Initializer()
 		{
-			HttpClientInitializer = credential
+			HttpClientInitializer = credential,
+			ApplicationName = "CalendarApp"
 		});
 
 		return service;
@@ -57,7 +58,15 @@ public static class CalendarManager
 				Console.WriteLine($"Event Description 	: {singleEvent.Description}");
 				Console.WriteLine($"Event Start/TimeZone: {singleEvent.Start.DateTime.ToString()}, {singleEvent.Start.TimeZone}");
 				Console.WriteLine($"Event End/Timezone	: {singleEvent.End.DateTime.ToString()}, {singleEvent.End.TimeZone}");
-				Console.WriteLine($"Event Attendees		: {singleEvent.Attendees}");
+				Console.Write($"Event Attendees		: ");
+				if (singleEvent.Attendees != null)
+				{
+					foreach (var attendee in singleEvent.Attendees)
+					{
+						Console.Write($"{attendee.Email}, ");
+					}
+				}
+				Console.WriteLine();
 			}
 		}
 		else
@@ -75,7 +84,7 @@ public static class CalendarManager
 		string description,
 		EventDateTime start,
 		EventDateTime end,
-		Event.CreatorData creator
+		IList<EventAttendee> attendees
 	)
 	{
 		Event eventInsert = new Event()
@@ -85,7 +94,7 @@ public static class CalendarManager
 			Description = description,
 			Start = start,
 			End = end,
-			Creator = creator
+			Attendees = attendees
 		};
 
 		var InsertRequest = service.Events.Insert(eventInsert, calendar.Id);

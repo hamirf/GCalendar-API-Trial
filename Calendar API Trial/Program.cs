@@ -1,4 +1,5 @@
-﻿using Google.Apis.Auth.OAuth2;
+﻿using Calendar_API_Trial;
+using Google.Apis.Auth.OAuth2;
 using Google.Apis.Calendar.v3;
 using Google.Apis.Calendar.v3.Data;
 using Google.Apis.Services;
@@ -13,18 +14,18 @@ class Program
 {
 	static void Main(string[] args)
 	{
-		ServiceAccountCredential credential = ServiceAccount.GenerateCredential();
+		UserCredential credential = GoogleOAuth.GenerateCredential();
 		CalendarService service = CalendarManager.GenerateService(credential);
 
-		Calendar calendar = CalendarManager.GenerateCalendar(service, Rooms.GetRoomLink(0));
+		Calendar calendar = CalendarManager.GenerateCalendar(service, Rooms.GetRoomLink(2));
 		Events events = CalendarManager.MakeRequest(service, calendar);
 		List<Event> allEvents = CalendarManager.GetEventList(events);
 
 		CalendarManager.ListingEvents(allEvents);
 		Console.Read();
 
-		var startDate = new DateTime(2023, 08, 28, 09, 00, 0);
-		var endDate = new DateTime(2023, 08, 28, 12, 00, 0);
+		var startDate = new DateTime(2023, 08, 29, 13, 00, 0);
+		var endDate = new DateTime(2023, 08, 29, 17, 00, 0);
 
 		// string startRCF = startDate.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
 		string startRCF = startDate.ToString("yyyy-MM-dd HH:mm:ss.fff");
@@ -55,10 +56,12 @@ class Program
 				// DateTimeRaw = endRCF,
 				TimeZone = "Asia/Jakarta"
 			},
-			new Event.CreatorData()
+			new List<EventAttendee>()
 			{
-				DisplayName = "hamirf",
-				Email = "haiqi@gmail.com"
+				new EventAttendee()
+				{
+					Email = "hamirfaruqi@gmail.com"
+				}
 			}
 		);
 

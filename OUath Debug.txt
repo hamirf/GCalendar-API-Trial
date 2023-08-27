@@ -1,0 +1,1 @@
+https://accounts.google.com/o/oauth2/auth?client_id={195969565898-aqnn7fk9mhlo3e2isskkc7j4ct3rsapg.apps.googleusercontent.com}&response_type=token&redirect_uri={https://localhost/authorize/}&scope={https://www.googleapis.com/auth/calendar}
